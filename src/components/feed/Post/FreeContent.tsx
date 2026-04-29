@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
-import { observer } from 'mobx-react-lite';
 
 import type { PostType } from '@/src/types/api';
 import ChatIcon from '@/assets/icons/chat.svg';
@@ -8,7 +7,7 @@ import LikeIcon from '@/assets/icons/heart.svg';
 import ActiveLikeIcon from '@/assets/icons/filled-heart.svg';
 import { ExpandableText } from '@/src/components/ui/ExpandableText/ExpandableText';
 import { IconCounterButton } from '@/src/components/ui/CounterButton/CounterButton';
-import { likesStore } from '@/src/features/feed/model/likes.store';
+import { useToggleLikeMutation } from '@/src/features/post/hooks/useToggleLikeMutation';
 import { tokens } from '@/src/theme/tokens';
 
 type Props = {
@@ -16,11 +15,14 @@ type Props = {
     variant?: 'feed' | 'detail';
 };
 
-export const FreeContent = observer(({ post, variant }: Props) => {
-    const liked = likesStore.isLiked(post.id);
-    const likesCount = likesStore.getCount(post.likesCount, post.id);
+export function FreeContent({ post, variant }: Props) {
+    const toggleLikeMutation = useToggleLikeMutation();
 
-    const onLike = () => likesStore.toggle(post.id);
+    const onLike = () => {
+        if (toggleLikeMutation.isPending) return;
+
+        toggleLikeMutation.mutate({ postId: post.id });
+    };
 
     return (
         <>
@@ -35,12 +37,12 @@ export const FreeContent = observer(({ post, variant }: Props) => {
             <View style={styles.content}>
                 <Text style={styles.title}>{post.title}</Text>
 
-                {variant === 'feed' ? <ExpandableText text={post.preview} numberOfLines={2} /> : <Text>{post.preview}</Text>}
+                {variant === 'feed' ? <ExpandableText text={post.body} numberOfLines={2} /> : <Text>{post.body}</Text>}
 
                 <View style={styles.footer}>
                     <IconCounterButton
-                        number={likesCount}
-                        isActive={liked}
+                        number={post.likesCount}
+                        isActive={post.isLiked}
                         icon={LikeIcon}
                         activeIcon={ActiveLikeIcon}
                         onPress={onLike}
@@ -64,7 +66,7 @@ export const FreeContent = observer(({ post, variant }: Props) => {
             </View>
         </>
     );
-});
+}
 
 const styles = StyleSheet.create({
     cover: {

@@ -1,6 +1,10 @@
-import type { PostsResponse, PostTier } from '@/src/types/api';
 import { request } from '@/src/api/request';
-import type { PostDetailResponse } from '@/src/types/api';
+import type {
+    LikeResponse,
+    PostDetailResponse,
+    PostsResponse,
+    PostTier,
+} from '@/src/types/api';
 
 type GetPostsParams = {
     token: string;
@@ -35,7 +39,7 @@ export async function getPost({ token, id }: { token: string; id: string }) {
 }
 
 export async function toggleLike({ token, id }: { token: string; id: string }) {
-    return request(`/posts/${id}/like`, {
+    return request<LikeResponse>(`/posts/${id}/like`, {
         method: 'POST',
         token,
     });
