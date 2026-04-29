@@ -1,9 +1,9 @@
 import { Image } from 'expo-image';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { router } from 'expo-router';
 
 import { tokens } from '@/src/theme/tokens';
 import type { PostType } from '@/src/types/api';
-
 import { FreeContent } from '@/src/components/feed/Post/FreeContent';
 import { PaidContent } from '@/src/components/feed/Post/PaidContent';
 
@@ -15,25 +15,36 @@ export function Post({ post }: PostProps) {
     const isPaid = post.tier === 'paid';
 
     return (
-        <View style={styles.card}>
-            <View style={styles.header}>
-                <Image
-                    source={{ uri: post.author.avatarUrl }}
-                    style={styles.avatar}
-                />
-                <View style={styles.authorMeta}>
-                    <Text style={styles.authorName}>
-                        {post.author.displayName}
-                    </Text>
-                </View>
-            </View>
+        <Pressable
+            onPress={() => {
+                if (post.tier === 'paid') return;
 
-            {isPaid ? (
-                <PaidContent coverUrl={post.coverUrl} />
-            ) : (
-                <FreeContent post={post} />
-            )}
-        </View>
+                router.push({
+                    pathname: '/post/[id]',
+                    params: { id: post.id },
+                });
+            }}
+        >
+            <View style={styles.card}>
+                <View style={styles.header}>
+                    <Image
+                        source={{ uri: post.author.avatarUrl }}
+                        style={styles.avatar}
+                    />
+                    <View style={styles.authorMeta}>
+                        <Text style={styles.authorName}>
+                            {post.author.displayName}
+                        </Text>
+                    </View>
+                </View>
+
+                {isPaid ? (
+                    <PaidContent coverUrl={post.coverUrl} />
+                ) : (
+                    <FreeContent post={post} variant="feed" />
+                )}
+            </View>
+        </Pressable>
     );
 }
 

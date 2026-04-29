@@ -31,3 +31,30 @@ export type PostsResponse = {
         hasMore: boolean;
     };
 };
+
+type Post = {
+    id: string;
+    author: Author;
+    title: string;
+    body: string;
+    preview: string;
+    coverUrl: string;
+    likesCount: number;
+    commentsCount: number;
+    isLiked: boolean;
+    tier: 'free' | 'paid';
+    createdAt: string;
+};
+
+export type PostDetailResponse = {
+    data: {
+        post: Post;
+    };
+};
+
+export type LikeResponse = {
+    data: {
+        isLiked: boolean;
+        likesCount: number;
+    };
+};

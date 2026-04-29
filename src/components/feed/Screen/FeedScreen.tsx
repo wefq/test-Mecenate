@@ -6,13 +6,18 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
+import { observer } from 'mobx-react-lite';
 
+import { useFeedQuery } from '@/src/features/feed/hooks/useFeedQuery';
 import { FeedErrorState } from '@/src/components/feed/Error/FeedErrorState';
 import { Post } from '@/src/components/feed/Post/Post';
+import { feedStore } from '@/src/features/feed/model/feed.store';
+import { FeedTabs } from '@/src/components/feed/Tabs/Tabs';
 import { tokens } from '@/src/theme/tokens';
-import { useFeedQuery } from '@/src/features/feed/hooks/useFeedQuery';
 
-export function FeedScreen() {
+export const FeedScreen = observer(() => {
+    const tab = feedStore.tab;
+
     const {
         data,
         isLoading,
@@ -22,7 +27,7 @@ export function FeedScreen() {
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
-    } = useFeedQuery();
+    } = useFeedQuery(tab);
 
     const posts = data?.pages.flatMap((page) => page.data.posts) ?? [];
 
@@ -40,6 +45,8 @@ export function FeedScreen() {
 
     return (
         <SafeAreaView style={styles.container}>
+            <FeedTabs />
+
             <FlatList
                 data={posts}
                 keyExtractor={(item) => item.id}
@@ -67,12 +74,13 @@ export function FeedScreen() {
             />
         </SafeAreaView>
     );
-}
+});
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: tokens.colors.appBackground,
+        paddingTop: tokens.spacing.xl
     },
     content: {},
     center: {

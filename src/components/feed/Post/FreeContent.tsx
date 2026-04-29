@@ -13,13 +13,14 @@ import { tokens } from '@/src/theme/tokens';
 
 type Props = {
     post: PostType;
+    variant?: 'feed' | 'detail';
 };
 
-export const FreeContent = observer(({ post }: Props) => {
+export const FreeContent = observer(({ post, variant }: Props) => {
     const liked = likesStore.isLiked(post.id);
     const likesCount = likesStore.getCount(post.likesCount, post.id);
 
-    const onLike = () => likesStore.toggle(post.id)
+    const onLike = () => likesStore.toggle(post.id);
 
     return (
         <>
@@ -34,7 +35,7 @@ export const FreeContent = observer(({ post }: Props) => {
             <View style={styles.content}>
                 <Text style={styles.title}>{post.title}</Text>
 
-                <ExpandableText text={post.preview} numberOfLines={2} />
+                {variant === 'feed' ? <ExpandableText text={post.preview} numberOfLines={2} /> : <Text>{post.preview}</Text>}
 
                 <View style={styles.footer}>
                     <IconCounterButton
