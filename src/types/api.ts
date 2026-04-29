@@ -58,3 +58,25 @@ export type LikeResponse = {
         likesCount: number;
     };
 };
+
+export type CommentType = {
+    id: string;
+    postId: string;
+    author: Author;
+    text: string;
+    createdAt: string;
+};
+
+export type CommentsResponse = {
+    data: {
+        comments: CommentType[];
+        nextCursor: string | null;
+        hasMore: boolean;
+    };
+};
+
+export type CommentCreatedResponse = {
+    data: {
+        comment: CommentType;
+    };
+};

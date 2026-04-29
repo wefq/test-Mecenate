@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     card: {
         paddingVertical: tokens.spacing.sm,
         backgroundColor: tokens.colors.white,
-        marginBottom: tokens.spacing.sm,
         borderRadius: tokens.radius.sm,
     },
     header: {

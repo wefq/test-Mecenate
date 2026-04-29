@@ -2,6 +2,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
 
 import type { PostType } from '@/src/types/api';
+
 import ChatIcon from '@/assets/icons/chat.svg';
 import LikeIcon from '@/assets/icons/heart.svg';
 import ActiveLikeIcon from '@/assets/icons/filled-heart.svg';

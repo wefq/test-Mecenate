@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 
 import { sessionStore } from '@/src/features/feed/model/session.store';
-import { RealtimeLikesBridge } from '@/src/features/realtime/RealtimeLikesBridge';
+import { RealtimeBridge } from '@/src/features/realtime/RealtimeBridge';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export default function RootLayout() {
@@ -28,7 +28,7 @@ export default function RootLayout() {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <RealtimeLikesBridge />
+            <RealtimeBridge />
             <Stack screenOptions={{ headerShown: false }} />
         </QueryClientProvider>
     );

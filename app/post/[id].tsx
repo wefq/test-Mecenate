@@ -1,8 +1,8 @@
 import { useLocalSearchParams } from 'expo-router';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native';
 import { tokens } from '@/src/theme/tokens';
 import { usePostQuery } from '@/src/features/post/hooks/usePostQuery';
-import { PostDetail } from '@/src/components/feed/Post/PostDetail';
+import { CommentsSection } from '@/src/components/feed/Post/CommentsSection';
 
 export default function PostDetailScreen() {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -26,10 +26,18 @@ export default function PostDetailScreen() {
         );
     }
 
-    return <PostDetail post={post} />;
+    return (
+        <SafeAreaView style={styles.container}>
+            <CommentsSection post={post} />
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: tokens.colors.appBackground,
+    },
 
     center: {
         flex: 1,
